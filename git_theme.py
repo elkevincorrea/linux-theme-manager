@@ -6,8 +6,8 @@ import click
 
 def add_from_git(git_url):
     with tempfile.TemporaryDirectory() as tmpdirname:
-        dir = clone(git_url, tmpdirname)
-        theme_dirs = get_themes_dirs(dir)
+        temp_dir = clone(git_url, tmpdirname)
+        theme_dirs = get_themes_dirs(temp_dir)
         for theme_dir in theme_dirs:
             install_theme(theme_dir)
 
@@ -15,7 +15,6 @@ def is_icon(theme_dir):
     with open(os.path.join(theme_dir, 'index.theme')) as index_theme:
         first_line = index_theme.readline()
         return str(first_line).find("[Icon Theme]") != -1
-            
 
 def clone(git_url, tmpdirname):
     """
@@ -31,9 +30,9 @@ def get_themes_dirs(dirname):
         theme_dirs.append(dirname)
     else:
         source_dirs = next(os.walk(dirname))[1]
-        for dir in source_dirs:
-            if os.path.exists(os.path.join(dirname, dir, 'index.theme')):
-                theme_dirs.append(os.path.join(dirname, dir))
+        for maybe_theme in source_dirs:
+            if os.path.exists(os.path.join(dirname, maybe_theme, 'index.theme')):
+                theme_dirs.append(os.path.join(dirname, maybe_theme))
     return theme_dirs
 
 def install_theme(theme_dir):

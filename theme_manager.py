@@ -1,4 +1,3 @@
-import sys
 from enum import Enum
 import git_theme
 import click
