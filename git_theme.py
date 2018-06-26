@@ -1,4 +1,4 @@
-from git import Repo
+from git import Repo, GitCommandError
 import os
 import tempfile
 import shutil
@@ -6,10 +6,14 @@ import click
 
 def add_from_git(git_url):
     with tempfile.TemporaryDirectory() as tmpdirname:
-        temp_dir = clone(git_url, tmpdirname)
-        theme_dirs = get_themes_dirs(temp_dir)
-        for theme_dir in theme_dirs:
-            install_theme(theme_dir)
+        try:
+            temp_dir = clone(git_url, tmpdirname)
+            theme_dirs = get_themes_dirs(temp_dir)
+            theme_dirs = get_themes_dirs(temp_dir)
+            for theme_dir in theme_dirs:
+                install_theme(theme_dir)
+        except GitCommandError:
+            click.secho("Repository not found", fg='red')
 
 def is_icon(theme_dir):
     with open(os.path.join(theme_dir, 'index.theme')) as index_theme:
@@ -21,6 +25,7 @@ def clone(git_url, tmpdirname):
     Clones a repo to a temp dir
     """
     repo_name = os.path.splitext(os.path.basename(git_url))[0]
+    # TODO show progress bar see http://click.pocoo.org/5/utils/#showing-progress-bars and https://gitpython.readthedocs.io/en/stable/tutorial.html?highlight=progress
     repo = Repo.clone_from(git_url, os.path.join(tmpdirname, repo_name), branch = 'master')
     return os.path.dirname(repo.git_dir)
 
