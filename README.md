@@ -1,0 +1,2 @@
+# Linux Theme Manager
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/81f0e861dd4d48d899ddf95a4ab08972)](https://www.codacy.com/app/kevinjoan16/linux-theme-manager?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=kevinjoan16/linux-theme-manager&amp;utm_campaign=Badge_Grade)
